@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <java.tool.options>-Xms200m -Xmx200m</java.tool.options>
     </properties>
 
     <dependencies>
@@ -27,7 +28,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -58,21 +58,43 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                    <jvmArguments>
+                        -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+                    </jvmArguments>
                     <image>
-                        <name>shishaodong/${project.artifactId}</name>
-                        <!-- 执行完build 自动push -->
-                        <publish>false</publish>
-                        <!-- 拉取镜像的策略，可选的值：ALWAYS, NEVER, IF_NOT_PRESENT -->
+                        <!--要使用的构建器映像的名称。paketobuildpacks/builder:base-->
+                        <!--<builder></builder>-->
+                        <!--要使用的运行映像的名称。无默认值，指示应该使用构建器元数据中指定的运行映像。-->
+                        <!--<runImage></runImage>-->
+                        <!--映像生成的映像的名称。-->
+                        <name>shishaodong/${project.artifactId}:${project.version}</name>
+                        <!-- 拉取镜像的策略，可选的值：ALWAYS, NEVER, IF_NOT_PRESENT。默认 ALWAYS-->
                         <pullPolicy>IF_NOT_PRESENT</pullPolicy>
-                        <verboseLogging>true</verboseLogging>
+                        <!-- 应该传递给构建器的环境变量。-->
+                        <env>
+                            <BP_JVM_VERSION>8.*</BP_JVM_VERSION>
+                            <JAVA_TOOL_OPTIONS>${java.tool.options}</JAVA_TOOL_OPTIONS>
+                        </env>
+                        <!--是否需要在建立缓存前清理缓存。默认false-->
                         <cleanCache>false</cleanCache>
-                        <!--                        <builder>paketobuildpacks/builder:base</builder>-->
-                        <!--                        <runImage>java:8</runImage>-->
+                        <!-- 启用构造器操作的详细日志记录。默认false-->
+                        <verboseLogging>true</verboseLogging>
+                        <!-- 执行完build 自动push。默认 false -->
+                        <publish>false</publish>
                     </image>
                     <!--配置构建宿主机信息，本机不用配置-->
                     <docker>
-                        <!--                        <host>http://127.0.0.1:2375</host>-->
+                        <!--<host>http://127.0.0.1:2375</host>-->
                         <tlsVerify>false</tlsVerify>
+                        <!--<builderRegistry>-->
+                        <!--     <username>user</username>-->
+                        <!--     <password>secret</password>-->
+                        <!--     <url>https://docker.example.com/v1/</url>-->
+                        <!--     <email>user@example.com</email>-->
+                        <!--</builderRegistry>-->
                         <publishRegistry>
                             <username>shishaodong</username>
                             <password>shaodong0924</password>
@@ -80,12 +102,7 @@
                             <email>spring-boot@qq.com</email>
                         </publishRegistry>
                     </docker>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <executable>true</executable>
                 </configuration>
             </plugin>
         </plugins>
