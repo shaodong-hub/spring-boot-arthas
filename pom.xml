@@ -65,10 +65,10 @@
                         -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
                     </jvmArguments>
                     <image>
-                        <!--要使用的构建器映像的名称。paketobuildpacks/builder:base-->
-                        <!--<builder></builder>-->
+                        <!--要使用的构建器映像的名称。默认：paketobuildpacks/builder:base-->
+                        <builder>paketobuildpacks/builder:base</builder>
                         <!--要使用的运行映像的名称。无默认值，指示应该使用构建器元数据中指定的运行映像。-->
-                        <!--<runImage></runImage>-->
+                        <!--<runImage>paketobuildpacks/run:base</runImage>-->
                         <!--映像生成的映像的名称。-->
                         <name>shishaodong/${project.artifactId}:${project.version}</name>
                         <!-- 拉取镜像的策略，可选的值：ALWAYS, NEVER, IF_NOT_PRESENT。默认 ALWAYS-->
@@ -96,13 +96,14 @@
                         <!--     <email>user@example.com</email>-->
                         <!--</builderRegistry>-->
                         <publishRegistry>
-                            <username>shishaodong</username>
-                            <password>shaodong0924</password>
-                            <url>hub.docker.com</url>
-                            <email>spring-boot@qq.com</email>
+                            <!--     <username>user</username>-->
+                            <!--     <password>secret</password>-->
+                            <!--     <url>https://docker.example.com/v1/</url>-->
+                            <!--     <email>user@example.com</email>-->
                         </publishRegistry>
                     </docker>
                     <executable>true</executable>
+                    <excludeDevtools>false</excludeDevtools>
                 </configuration>
             </plugin>
         </plugins>
