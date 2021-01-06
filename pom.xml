@@ -10,16 +10,22 @@
     </parent>
     <groupId>com.github</groupId>
     <artifactId>spring-boot-arthas</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>spring-boot-arthas</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
+        <arthas.version>3.4.5</arthas.version>
         <java.tool.options>-Xms200m -Xmx200m</java.tool.options>
     </properties>
 
     <dependencies>
+        <!--        <dependency>-->
+        <!--            <groupId>com.taobao.arthas</groupId>-->
+        <!--            <artifactId>arthas-spring-boot-starter</artifactId>-->
+        <!--            <version>${arthas.version}</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -65,8 +71,12 @@
                         -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
                     </jvmArguments>
                     <image>
+                        <!--                        <bindings>-->
+                        <!--                            <binding>buildpack.toml:/cnb/buildpacks/paketo-buildpacks_bellsoft-liberica/6.0.0/buildpack.toml:ro</binding>-->
+                        <!--                        </bindings>-->
                         <!--要使用的构建器映像的名称。默认：paketobuildpacks/builder:base-->
-                        <builder>paketobuildpacks/builder:base</builder>
+                        <builder>builder:latest</builder>
+                        <!--                        <builder>paketobuildpacks/builder:base</builder>-->
                         <!--要使用的运行映像的名称。无默认值，指示应该使用构建器元数据中指定的运行映像。-->
                         <!--<runImage>paketobuildpacks/run:base</runImage>-->
                         <!--映像生成的映像的名称。-->
@@ -75,7 +85,7 @@
                         <pullPolicy>IF_NOT_PRESENT</pullPolicy>
                         <!-- 应该传递给构建器的环境变量。-->
                         <env>
-                            <BP_JVM_VERSION>8.*</BP_JVM_VERSION>
+                            <BP_JVM_VERSION>11.*</BP_JVM_VERSION>
                             <JAVA_TOOL_OPTIONS>${java.tool.options}</JAVA_TOOL_OPTIONS>
                         </env>
                         <!--是否需要在建立缓存前清理缓存。默认false-->
@@ -84,6 +94,7 @@
                         <verboseLogging>true</verboseLogging>
                         <!-- 执行完build 自动push。默认 false -->
                         <publish>false</publish>
+
                     </image>
                     <!--配置构建宿主机信息，本机不用配置-->
                     <docker>
@@ -102,7 +113,6 @@
                             <!--     <email>user@example.com</email>-->
                         </publishRegistry>
                     </docker>
-                    <executable>true</executable>
                     <excludeDevtools>false</excludeDevtools>
                 </configuration>
             </plugin>
